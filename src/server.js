@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
+const { typeDefs, resolvers } = require('./schema')
 
 const {
   DB_USERNAME = 'admin',
@@ -10,37 +11,7 @@ const {
 } = process.env
 
 mongoose.connect(`mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`)
-  .then(() => {
-    const books = [
-      {
-        title: 'Harry Potter and the Chamber of Secrets',
-        author: 'J.K. Rowling'
-      },
-      {
-        title: 'Jurassic Park',
-        author: 'Michael Crichton'
-      }
-    ]
-
-    const typeDefs = gql`
-      type Book {
-        title: String
-        author: String
-      }
-
-      type Query {
-        books: [Book]
-      }
-    `
-
-    const resolvers = {
-      Query: {
-        books: () => books
-      }
-    }
-
-    return new ApolloServer({ typeDefs, resolvers }).listen()
-  })
+  .then(() => new ApolloServer({ typeDefs, resolvers }).listen())
   .then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`)
   })
