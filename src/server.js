@@ -5,7 +5,7 @@ const { typeDefs, resolvers } = require('./schema')
 const {
   DB_USERNAME = 'admin',
   DB_PASSWORD = 'secret',
-  DB_HOST = '172.17.0.2',
+  DB_HOST = '127.0.0.1',
   DB_PORT = 27017,
   DB_NAME = 'chat'
 } = process.env

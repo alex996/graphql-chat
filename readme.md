@@ -1,6 +1,6 @@
 # Real-time Chat App (WIP)
 
-> Note: this project is in active development. Your suggestions are welcome!
+> **Note**: this project is in active development. Your suggestions are welcome!
 
 Built with MERN + GraphQL.
 
@@ -115,11 +115,11 @@ Built with MERN + GraphQL.
 
 ## MongoDB Dev Setup with Docker
 
-> Note: you are free to use a cloud provider, such as mLab or Atlas, instead.
+> **Note**: you are free to use a cloud provider, such as mLab or Atlas, instead.
 
 ```sh
-# Start a MongoDB container on port 27017 and create a 'root' user on the 'admin' database
-docker run -d --name mongodb -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+# Start a MongoDB container in the background on port 27017 and create a 'root' user on the 'admin' database
+docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
 
 # Run the mongo CLI client on the container as 'root' against 'admin' database and connect to 'chat'
 docker exec -it mongodb mongo -u root -p secret --authenticationDatabase admin chat
@@ -128,4 +128,8 @@ docker exec -it mongodb mongo -u root -p secret --authenticationDatabase admin c
 db.createUser({
   user: 'admin', pwd: 'secret', roles: ['readWrite', 'dbAdmin']
 })
+
+# Verify that you can connect to mongo through the exposed port on your host machine
+curl 127.0.0.1:27017
+# It looks like you are trying to access MongoDB over HTTP on the native driver port.
 ```
