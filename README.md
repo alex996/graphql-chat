@@ -1,42 +1,63 @@
-# Intro to GraphQL
+# Express GraphQL Server
 
 > Note, this repo follows up a companion [video series](https://www.youtube.com/playlist?list=PLcCp4mjO-z9_y8lByvIfNgA_F18l-soQv) on YouTube.
 
-A demo terminal chat app that uses [GraphQL.js](https://graphql.org/graphql-js/).
+A demo chat web API built with [Express](http://expressjs.com/) framework using [express-graphql](https://graphql.org/graphql-js/running-an-express-graphql-server/) middleware.
 
-## Anatomy of `graphql`
+## `express-graphql` HTTP middleware
 
-GraphQL.js exports `graphql` function for parsing and executing GraphQL queries.
+`express-graphl` module exports a route handler that you can attach to a `/graphql` endpoint.
 
 ```js
-graphql(schema, query, rootValue, contextValue, ...)
+graphqlHTTP({
+  schema,
+  rootValue,
+  graphiql,
+  context,
+  formatError,
+  ...
+})
 ```
 
-It expects at least two arguments:
+The only required argument is
 
-- `schema` (`String`) with type definitions written in [GraphQL SDL](https://alligator.io/graphql/graphql-sdl/), and
-- `query` (`String`) operation, such as a query or mutation
+- `schema` (`String`) with type definitions
 
-We can also pass in an optional third argument
+Other optional arguments include
 
-- `rootValue` (object literal) used to resolve the top-level fields defined in your schema
+- `rootValue` (`Object`) to resolve top-level fields
+- `graphiql` (`Boolean`) to toggle GraphiQL interface
+- `context` (`Object` *or* `Function`) to share data
+- `formatError` (`Function`) to format error responses
+
+`rootValue` will be passed to `graphql` function as `rootValue`. Your schema could define fields that cannot be resolved on the data source. In that case, resolver functions can return objects wrapped with an [ES6 class](https://graphql.org/graphql-js/object-types/) whose methods or getters will provide for the missing fields.
 
 ```js
+class User {
+  get profileUrl () { /*...*/ }
+
+  messages (args, context, info) { /*...*/ }
+}
+
 const rootValue = {
-  field: (args, context, info) => { /*...*/ }
+  user: (args, context, info) => new User(user)
 }
 ```
 
-Each top-level resolver function will accept
+> Note that getters cannot have any formal arguments, whereas methods will follow the resolver function signature.
 
-- `args`, an object with arguments passed to the query or mutation
-- `context`, a `contextValue` object supplied to `graphql`, and
-- [`info`](https://www.prisma.io/blog/graphql-server-basics-demystifying-the-info-argument-in-graphql-resolvers-6f26249f613a/), an object with query AST and execution information
+When passed to `graphqlHTTP`, `context` will be forwarded as `contextValue` to `graphql` function, and made available to root resolvers. It can be provided as an object, or a function that accepts the `Request` instance from Express and returns an object
 
-> Note that when defining your schema with `GraphQLObjectType` instead of SDL, `fields` will be resolved with a function that first accepts a `root`/`parent` value: `resolve: (root, args, context, info) => { /* ... */ }`.
+```js
+graphqlHTTP({
+  context: req => { /*...*/ }
+})
+```
 
-Another optional argument in `graphql` I did not mention is `contextValue`
+[`formatError`](https://github.com/graphql/express-graphql#debugging-tips) is another optional argument that overwrites the default spec-compliant error response format.
 
-- `contextValue` (object literal) passed to resolver functions after arguments to define shared data
+```js
+formatError: error => { /*...*/ }
+```
 
-See how `rootValue` is [different](https://github.com/graphql/graphql-js/issues/735#issuecomment-302456482) from `contextValue`.
+See [`graphqlHTTP` signature](https://graphql.org/graphql-js/express-graphql/#graphqlhttp) with [all options](https://github.com/graphql/express-graphql#options).
