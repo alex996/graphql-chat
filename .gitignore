@@ -1,22 +1,3 @@
 node_modules
-.nyc_output
-.scannerwork
-coverage/
-deps
 
-# Exclude compiled files
-dist/
-
-# Exclude IDE project folders
-.idea/
-.vscode/*
-*.sublime-project
-*.sublime-workspace
-
-# OS files
-.DS_STORE
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+*.log*
