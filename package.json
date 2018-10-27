@@ -4,13 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "watch": "nodemon"
+    "start": "NODE_ENV=production node -r esm .",
+    "dev": "nodemon -r esm"
   },
   "dependencies": {
-    "apollo-server": "^2.1.0",
-    "graphql": "^14.0.2"
+    "apollo-server-express": "^2.1.0",
+    "bcryptjs": "^2.4.3",
+    "esm": "^3.0.84",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2",
+    "mongoose": "^5.3.6"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "standard": "^12.0.1"
   }
 }

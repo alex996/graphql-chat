@@ -1,65 +1,75 @@
-# Apollo GraphQL Server
+# Real-time Chat App
 
-> Note, this repo follows up a companion [video series](https://www.youtube.com/playlist?list=PLcCp4mjO-z9_y8lByvIfNgA_F18l-soQv) on YouTube.
+Built on MERN stack with GraphQL.
 
-A demo chat GraphQL API built with [apollo-server](https://www.apollographql.com/docs/apollo-server/) on top of [Express](https://expressjs.com/).
+## Features
 
-## `ApolloServer` class
+### MVP
 
-`apollo-server` library exports a core class that you can instantiate with an options object.
+- Sign up / sign in / reset password
 
-```js
-new ApolloServer({
-  typeDefs,
-  resolvers,
-  context,
-  mocks,
-  formatError,
-  ...
-})
-```
+- Direct messaging (1 on 1)
 
-In [v1](https://www.apollographql.com/docs/apollo-server/v1/example.html), `typeDefs` and `resolvers` were passed to `makeExecutableSchema`. The resulting `schema` would then be supplied to `graphqlExpress` middleware. In v2, `ApolloServer` only requires two arguments,
+- Private group chat (2+ users)
 
-- `typeDefs` (`Object`) to declare the data types with SDL, and
-- `resolvers` (`Object`) to resolve the schema with resolver functions
+- File sharing (img, text, etc.)
 
-Some other optional arguments include
+- Responsive material design
 
-- `context` (`Object`) to share data across resolvers
-- `mocks` (`Boolean`) to enable randomly-generated mocks
-- `formatError` (`Object` *or* `Function`) to fine-tune the error format
-- `subscriptions` (`String` *or* `Object`) to configure real-time updates
-- `schema` (`Object`) for backwards compatibility with v1
+### Nice to Haves
 
-> To see a full list of arguments, refer to [`apollo-server` API](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#ApolloServer).
+- Notifications
 
-Previously, `typeDefs` were written in SDL using a template literal, which didn't allow for syntax highlighting. As of v2, `typeDefs` are invoked on `gql` with a tagged template, and can be color coded with an editor extension (such as [GraphQL for VSCode](https://marketplace.visualstudio.com/items?itemName=kumar-harsh.graphql-for-vscode)).
+- Themes and customization
 
-```js
-const typeDefs = gql`
-  type Query {
-    user(id: ID!): User
-  }
-`
-```
+- Status indicators (typing, offline)
 
-`resolvers`, unlike `rootValue` in `express-graphql`, allow for root-level *and* nested resolvers. Each resolver function falls under `Query`, `Mutation`, `Subscription`, or custom object type, and has the following signature
+- Emails (confirmation, forgot password)
 
-```js
-const resolvers = {
-  Query: {
-    user: (root, args, context, info) => { /*...*/ }
-  }
-}
-```
+- Other (?)
 
-This is different from `rootValue` resolvers in `express-graphql`
+## Topics
 
-```js
-const rootValue = {
-  user: (args, context, info) => { /*...*/ }
-}
-```
+- Schema design
 
-In `apollo-server`, `root` evaluates to either the parent field, or `rootValue` for top-level resolvers. See its [value differs](https://www.apollographql.com/docs/apollo-server/essentials/data.html#parent) depending on the field. As with `express-graphql`, any fields that are not defined explicitly will be accessed as object props or invoked as methods on the `root`.
+- Validation
+
+- Authentication (session vs. token)
+
+- Authorization (access control)
+
+- Security (injections, XSS, CSRF, headers)
+
+- State management
+
+- File upload
+
+- Real-time updates
+
+- Performance optimizations
+
+- Pagination
+
+## Technologies
+
+### Back-End
+
+- Node + Express
+
+- MongoDB + Mongoose ORM
+
+- Apollo Server v2
+
+- Web Sockets
+
+- Redis
+
+- Other (?)
+
+### Front-End
+
+- React 16+
+
+- Apollo Client v2
+
+- Material-UI
