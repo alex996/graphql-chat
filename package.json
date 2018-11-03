@@ -13,6 +13,7 @@
     "esm": "^3.0.84",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
+    "joi": "^14.0.1",
     "mongoose": "^5.3.6"
   },
   "devDependencies": {
