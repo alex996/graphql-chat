@@ -1,70 +1,62 @@
 import Joi from 'joi'
 import mongoose from 'mongoose'
 import { UserInputError } from 'apollo-server-express'
-import { signUp, signIn } from '../schemas'
-import { User } from '../models'
+import * as Schemas from '../schemas'
 import * as Auth from '../auth'
+import { User } from '../models'
 
 export default {
   Query: {
-    me: (root, args, { req }, info) => {
-      // TODO: projection
-      Auth.checkSignedIn(req)
-
-      return User.findById(req.session.userId)
-    },
-    users: (root, args, { req }, info) => {
-      // TODO: auth, projection, pagination
-
-      Auth.checkSignedIn(req)
-
-      return User.find({})
-    },
-    user: (root, { id }, { req }, info) => {
-      // TODO: auth, projection, sanitization
-
-      Auth.checkSignedIn(req)
-
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new UserInputError(`${id} is not a valid user ID.`)
+    me: Auth.ensureSignedIn(
+      (root, args, { req }, info) => {
+        // TODO: projection
+        return User.findById(req.session.userId)
       }
-
-      return User.findById(id)
-    }
+    ),
+    users: Auth.ensureSignedIn(
+      (root, args, { req }, info) => {
+        // TODO: projection, pagination
+        return User.find({})
+      }
+    ),
+    user: Auth.ensureSignedIn(
+      (root, { id }, { req }, info) => {
+        // TODO: projection, sanitization
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          throw new UserInputError(`${id} is not a valid user ID.`)
+        }
+        return User.findById(id)
+      }
+    )
   },
   Mutation: {
-    signUp: async (root, args, { req }, info) => {
-      // TODO: not auth, validation
+    signUp: Auth.ensureSignedOut(
+      async (root, args, { req }, info) => {
+        // TODO: projection
+        await Joi.validate(args, Schemas.signUp, { abortEarly: false })
 
-      Auth.checkSignedOut(req)
+        const user = await User.create(args)
 
-      await Joi.validate(args, signUp, { abortEarly: false })
+        await Auth.signIn()
 
-      const user = await User.create(args)
-
-      req.session.userId = user.id
-
-      return user
-    },
+        return user
+      }
+    ),
     signIn: async (root, args, { req }, info) => {
-      const { userId } = req.session
+      const { user } = req
 
-      if (userId) {
-        return User.findById(userId)
+      if (user) {
+        return user
       }
 
-      await Joi.validate(args, signIn, { abortEarly: false })
+      await Joi.validate(args, Schemas.signIn, { abortEarly: false })
 
-      const user = await Auth.attemptSignIn(args.email, args.password)
-
-      req.session.userId = user.id
-
-      return user
+      return Auth.signInOrFail(req, args.email, args.password)
     },
-    signOut: (root, args, { req, res }, info) => {
-      Auth.checkSignedIn(req)
-
-      return Auth.signOut(req, res)
-    }
+    signOut: Auth.ensureSignedIn(
+      (root, args, { req, res }, info) => {
+        return Auth.signOut(req, res)
+      }
+    )
   }
 }

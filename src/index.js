@@ -5,6 +5,7 @@ import connectRedis from 'connect-redis'
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+import passport from './auth'
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME,
   SESS_NAME, SESS_SECRET, SESS_LIFETIME, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
@@ -41,6 +42,9 @@ import {
         secure: IN_PROD
       }
     }))
+
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     const server = new ApolloServer({
       typeDefs,
