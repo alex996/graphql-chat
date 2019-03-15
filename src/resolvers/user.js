@@ -1,7 +1,5 @@
 import Joi from 'joi'
-import mongoose from 'mongoose'
-import { UserInputError } from 'apollo-server-express'
-import { signUp, signIn } from '../schemas'
+import { signUp, signIn, objectId } from '../schemas'
 import { attemptSignIn, signOut } from '../auth'
 import { User } from '../models'
 
@@ -15,12 +13,10 @@ export default {
       // TODO: projection, pagination
       return User.find({})
     },
-    user: (root, { id }, context, info) => {
-      // TODO: projection, sanitization
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new UserInputError(`${id} is not a valid user ID.`)
-      }
-      return User.findById(id)
+    user: async (root, args, context, info) => {
+      // TODO: projection
+      await Joi.validate(args, objectId)
+      return User.findById(args.id)
     }
   },
   Mutation: {
@@ -46,6 +42,12 @@ export default {
     },
     signOut: (root, args, { req, res }, info) => {
       return signOut(req, res)
+    }
+  },
+  User: {
+    chats: async (user, args, { req }, info) => {
+      // TODO: should not be able to list other ppl's chats or read their msgs!
+      return (await user.populate('chats').execPopulate()).chats
     }
   }
 }
