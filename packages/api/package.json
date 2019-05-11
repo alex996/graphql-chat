@@ -7,7 +7,8 @@
   "author": "Alex",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "start": "node -r esm .",
+    "dev": "nodemon -r esm"
   },
   "homepage": "https://github.com/alex996/graphql-chat#readme",
   "repository": {
@@ -16,5 +17,18 @@
   },
   "bugs": {
     "url": "https://github.com/alex996/graphql-chat/issues"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.5.0",
+    "connect-redis": "^3.4.1",
+    "esm": "^3.2.22",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "graphql": "^14.3.0",
+    "ioredis": "^4.9.3",
+    "mongoose": "^5.5.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
   }
 }
