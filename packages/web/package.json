@@ -2,12 +2,15 @@
   "name": "@graphql-chat/web",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/main.js",
+  "main": "dist-server/main.js",
   "description": "Real-time GraphQL chat UI",
   "author": "Alex",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "dev": "webpack --mode development --watch --progress",
+    "prebuild": "rm -rf dist*",
+    "build": "webpack --mode production --progress",
+    "start": "NODE_ENV=production node dist-server/main"
   },
   "homepage": "https://github.com/alex996/graphql-chat#readme",
   "repository": {
@@ -16,5 +19,30 @@
   },
   "bugs": {
     "url": "https://github.com/alex996/graphql-chat/issues"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link": "^1.2.11",
+    "apollo-link-error": "^1.1.10",
+    "apollo-link-http": "^1.5.14",
+    "express": "^4.16.4",
+    "graphql": "^14.3.0",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.8.6",
+    "react-apollo-hooks": "^0.4.5",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "http-proxy-middleware": "^0.19.1",
+    "nodemon-webpack-plugin": "^4.0.8",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-node-externals": "^1.7.2"
   }
 }
