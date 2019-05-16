@@ -1,34 +1,32 @@
-const nodeExternals = require('webpack-node-externals')
-const NodemonPlugin = require('nodemon-webpack-plugin')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 
-const shared = {
-  devtool: 'source-map',
+module.exports = {
+  devtool: 'cheap-module-source-map',
+  output: {
+    filename: '[name].[contenthash].js'
+  },
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
         }
       }
     ]
-  }
-}
-
-module.exports = [
-  {
-    ...shared,
-    entry: './src/client.js'
   },
-  {
-    ...shared,
-    target: 'node',
-    entry: './src/server.js',
-    output: {
-      path: `${__dirname}/dist-server`
-    },
-    externals: [nodeExternals()],
-    plugins: [new NodemonPlugin()]
-  }
-]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index.html'
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
+    }),
+    new webpack.DefinePlugin({
+      API_URI: `"${process.env.API_URI || '/graphql'}"`
+    })
+  ]
+}

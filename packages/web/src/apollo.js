@@ -1,3 +1,4 @@
+/* global API_URI */
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
@@ -20,7 +21,7 @@ const client = new ApolloClient({
           if (networkError) console.log(`[Network error]: ${networkError}`)
         }),
         new HttpLink({
-          uri: window.__APOLLO_URL__
+          uri: API_URI
         })
       ]
   ),

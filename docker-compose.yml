@@ -21,8 +21,6 @@ services:
     container_name: chat-web
     expose:
       - "4000"
-    #environment:
-    #  - API_HOST=api
     depends_on:
       - api
 
