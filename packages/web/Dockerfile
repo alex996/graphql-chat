@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:12-alpine AS node
 
 WORKDIR /app
 
@@ -10,4 +10,8 @@ COPY . .
 
 RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx
+
+COPY --from=node /app/dist/ /usr/share/nginx/html
+
+COPY proxy.conf /etc/nginx/conf.d/default.conf

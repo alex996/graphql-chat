@@ -37,6 +37,9 @@ db.createUser({
 # Verify that you can connect to mongo through the exposed port on your host machine
 curl 127.0.0.1:27017
 # It looks like you are trying to access MongoDB over HTTP on the native driver port.
+
+# Connect as admin
+docker exec -it chat-db mongo -u admin -p secret chat
 ```
 
 ## Redis
@@ -50,7 +53,15 @@ docker exec -it redisdb redis-cli -a secret
 ## Docker
 
 ```sh
+# Build a container, tag with a name
 docker build -t gql-chat-api .
 
+# Run a container in detached mode
 docker run -d -p 3000:3000 gql-chat-api
+
+# SSH into the container
+docker exec -it gql-chat-api sh
+
+# Remove dangling images
+docker rmi $(docker images --quiet --filter "dangling=true")
 ```
