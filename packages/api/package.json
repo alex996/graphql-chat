@@ -7,7 +7,7 @@
   "author": "Alex",
   "license": "MIT",
   "scripts": {
-    "start": "node -r esm .",
+    "start": "NODE_ENV=production node -r esm .",
     "dev": "nodemon -r esm"
   },
   "homepage": "https://github.com/alex996/graphql-chat#readme",

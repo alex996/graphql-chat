@@ -6,6 +6,7 @@ import { App } from './components'
 const {
   HTTP_PORT = 4000,
   NODE_ENV = 'development',
+  API_HOST = 'localhost',
   API_PORT = 3000,
   API_URI = '/graphql'
 } = process.env
@@ -24,7 +25,7 @@ const IN_DEV = NODE_ENV === 'development'
       app.use(
         API_URI,
         proxy({
-          target: `http://localhost:${API_PORT}`,
+          target: `http://${API_HOST}:${API_PORT}`,
           changeOrigin: true
         })
       )
