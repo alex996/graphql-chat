@@ -1,11 +1,15 @@
 FROM node:12-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --only=production
 
 COPY . .
 
-CMD ["npm", "start"]
+USER node
+
+CMD ["node", "-r", "esm", "index.js"]

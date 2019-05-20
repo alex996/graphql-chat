@@ -5,3 +5,5 @@ node_modules
 Dockerfile
 
 *.log
+
+readme.md

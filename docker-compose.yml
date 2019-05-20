@@ -9,18 +9,23 @@ services:
     expose:
       - "3000"
     environment:
+      - DB_USERNAME
+      - DB_PASSWORD
       - DB_HOST=db
-      - REDIS_HOST=redis
+      - DB_NAME=$MONGO_INITDB_DATABASE
+      - SESS_SECRET
+      - REDIS_HOST=cache
+      - REDIS_PASSWORD
     depends_on:
       - db
-      - redis
+      - cache
 
   web:
     build: packages/web
     image: chat-web
     container_name: chat-web
     expose:
-      - "4000"
+      - "80"
     depends_on:
       - api
 
@@ -30,22 +35,27 @@ services:
     expose:
       - "27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: secret
-      MONGO_INITDB_DATABASE: chat
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
     volumes:
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+      - ./data:/data/db
 
-  redis:
-    image: redis
-    container_name: chat-redis
+  cache:
+    image: redis:alpine
+    container_name: chat-cache
     expose:
       - "6379"
-    command: ["--requirepass secret"]
+    environment:
+      - REDIS_PASSWORD
+    command: ['--requirepass "$REDIS_PASSWORD"']
 
-  nginx:
-    image: nginx
-    container_name: chat-nginx
+  proxy:
+    image: nginx:alpine
+    container_name: chat-proxy
     volumes:
       - ./proxy.conf:/etc/nginx/conf.d/default.conf
     ports:

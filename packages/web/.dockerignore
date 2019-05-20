@@ -7,3 +7,7 @@ node_modules
 Dockerfile
 
 *.log
+
+proxy.conf
+
+readme.md

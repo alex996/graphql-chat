@@ -39,7 +39,7 @@ export const SESS_OPTIONS = {
   secret: SESS_SECRET,
   resave: true,
   rolling: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     maxAge: +SESS_LIFETIME, // requires int
     sameSite: true,

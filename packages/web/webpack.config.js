@@ -28,5 +28,14 @@ module.exports = {
     new webpack.DefinePlugin({
       API_URI: `"${process.env.API_URI || '/graphql'}"`
     })
-  ]
+  ],
+  devServer: {
+    open: true,
+    port: 4000,
+    compress: true,
+    historyApiFallback: true, // HTML5 History
+    proxy: {
+      '/graphql': 'http://localhost:3000'
+    }
+  }
 }

@@ -7,7 +7,7 @@
   "author": "Alex",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --open --port 4000 --compress --mode development",
+    "dev": "webpack-dev-server --mode development",
     "prebuild": "rm -rf dist",
     "build": "webpack --mode production --progress"
   },

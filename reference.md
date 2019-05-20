@@ -65,3 +65,10 @@ docker exec -it gql-chat-api sh
 # Remove dangling images
 docker rmi $(docker images --quiet --filter "dangling=true")
 ```
+
+## Docker best practices
+
+- Run node with `USER node` instead of `root`
+- Use `FROM node:alpine` base image
+- Don't map `node_modules` volume to your container
+  - local `node_modules` may contain OS-specific (Mac, Windows) binaries

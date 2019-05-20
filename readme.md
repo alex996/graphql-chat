@@ -4,6 +4,54 @@
 
 GraphQL chat API & UI monorepo.
 
+## Setup
+
+### Dev
+
+```sh
+# Boot the stack; this will
+# - provision mongo & redis
+# - launch api & web
+npm run up
+```
+
+### Prod
+
+```sh
+# Create env file
+cp .env.example .env
+# or export into shell
+export $(cat /path/to/.env)
+
+# Boot the stack
+docker-compose up -d
+```
+
+## CLI
+
+### NPM
+
+```sh
+# Only run api & web
+npm run dev
+
+# Stop containers
+npm run stop
+
+# Tear down containers
+npm run down
+```
+
+### Docker
+
+```sh
+# Connect to mongo
+docker exec -it chat-db mongo -u admin -p secret chat
+
+# Connect to redis
+docker exec -it chat-cache redis-cli -a secret
+```
+
 ## MVP
 
 As a user, I can
