@@ -1,6 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { ApolloProvider, useQuery } from 'react-apollo-hooks'
+import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import client from '../apollo'
 
 const GET_USERS = gql`
