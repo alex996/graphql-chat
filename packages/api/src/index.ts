@@ -21,11 +21,10 @@ import {
 
     const app = express()
 
-    app.disable('x-powered-by')
-
     const RedisStore = connectRedis(session)
 
     const store = new RedisStore({
+      // @ts-ignore
       client: new Redis(REDIS_OPTIONS)
     })
 
@@ -38,6 +37,7 @@ import {
 
     const server = new ApolloServer({
       typeDefs,
+      // @ts-ignore: See apollo-server#1775
       resolvers,
       ...APOLLO_OPTIONS
     })

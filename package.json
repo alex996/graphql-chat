@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "commit": "git-cz",
-    "lint": "eslint '**/*.js'",
-    "lint:fix": "prettier-eslint '**/*.js' --write",
+    "lint": "eslint '**/*.{js,ts}'",
+    "lint:fix": "prettier-eslint '**/*.{js,ts}' --write",
     "up": "docker-compose -f docker-compose.dev.yml up -d",
     "postup": "wait-on data && npm run dev",
     "dev": "lerna run --parallel dev",
@@ -13,7 +13,8 @@
     "down": "docker-compose down"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.16.0",
@@ -26,6 +27,7 @@
     "lerna": "^3.14.1",
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1",
+    "typescript": "^3.4.5",
     "wait-on": "^3.2.0"
   },
   "config": {

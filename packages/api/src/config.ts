@@ -1,3 +1,5 @@
+import { Request, Response } from 'express'
+
 const ONE_DAY = 1000 * 60 * 60 * 24
 
 export const {
@@ -41,7 +43,7 @@ export const SESS_OPTIONS = {
   rolling: true,
   saveUninitialized: false,
   cookie: {
-    maxAge: +SESS_LIFETIME, // requires int
+    maxAge: +SESS_LIFETIME,
     sameSite: true,
     secure: IN_PROD
   }
@@ -55,5 +57,5 @@ export const APOLLO_OPTIONS = {
         'request.credentials': 'include'
       }
     },
-  context: ({ req, res }) => ({ req, res })
+  context: ({ req, res }: { req: Request; res: Response }) => ({ req, res })
 }

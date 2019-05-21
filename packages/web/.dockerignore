@@ -8,6 +8,4 @@ Dockerfile
 
 *.log
 
-proxy.conf
-
 readme.md

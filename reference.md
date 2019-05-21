@@ -39,7 +39,7 @@ curl 127.0.0.1:27017
 # It looks like you are trying to access MongoDB over HTTP on the native driver port.
 
 # Connect as admin
-docker exec -it chat-db mongo -u admin -p secret chat
+docker exec -it mongodb mongo -u admin -p secret chat
 ```
 
 ## Redis
@@ -54,21 +54,44 @@ docker exec -it redisdb redis-cli -a secret
 
 ```sh
 # Build a container, tag with a name
-docker build -t gql-chat-api .
+docker build -t chat-api .
 
 # Run a container in detached mode
-docker run -d -p 3000:3000 gql-chat-api
+docker run -d -p 3000:3000 chat-api
 
 # SSH into the container
-docker exec -it gql-chat-api sh
+docker exec -it chat-api sh
 
 # Remove dangling images
 docker rmi $(docker images --quiet --filter "dangling=true")
+
+# Remove stopped containers
+docker rm $(docker ps -a -q)
 ```
 
+## docker-compose
+
+- [CLI ref](https://docs.docker.com/compose/reference/overview/)
+- [environment vars](https://docs.docker.com/compose/environment-variables/)
+- basic [node.js guide](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)
+- specific services `docker-compose up chat-db chat-cache`
+- start & rebuild `docker-compose up --build`
+
 ## Docker best practices
+
+> See [this](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md) and [this](https://docs.docker.com/v17.09/engine/userguide/eng-image/dockerfile_best-practices/)
 
 - Run node with `USER node` instead of `root`
 - Use `FROM node:alpine` base image
 - Don't map `node_modules` volume to your container
   - local `node_modules` may contain OS-specific (Mac, Windows) binaries
+- Make sure to pass environment vars, not shell vars
+  - use `export` and not simply `source .env` or `. .env` (see [this](https://forums.docker.com/t/docker-compose-not-seeing-environment-variables-on-the-host/11837/3))
+    - otherwise, make sure to use `set -a` (see [this](https://stackoverflow.com/a/33186458))
+  - `echo $DB_USERNAME` vs. `printenv | grep DB_USERNAME` (see [this](https://github.com/docker/compose/issues/4189#issuecomment-320362242))
+- Make env vars configurable
+  - e.g. [mongo](https://github.com/docker-library/mongo/issues/257#issuecomment-375747688) or [redis](https://github.com/docker-library/redis/issues/46#issuecomment-363117342)
+
+## Nginx
+
+- [basic setup](https://gist.github.com/soheilhy/8b94347ff8336d971ad0)

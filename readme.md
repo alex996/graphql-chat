@@ -13,6 +13,12 @@ GraphQL chat API & UI monorepo.
 # - provision mongo & redis
 # - launch api & web
 npm run up
+
+# Stop containers
+npm run stop
+
+# Tear down containers
+npm run down
 ```
 
 ### Prod
@@ -25,31 +31,12 @@ export $(cat /path/to/.env)
 
 # Boot the stack
 docker-compose up -d
-```
 
-## CLI
+# View logs
+docker-compose logs
 
-### NPM
-
-```sh
-# Only run api & web
-npm run dev
-
-# Stop containers
-npm run stop
-
-# Tear down containers
-npm run down
-```
-
-### Docker
-
-```sh
-# Connect to mongo
-docker exec -it chat-db mongo -u admin -p secret chat
-
-# Connect to redis
-docker exec -it chat-cache redis-cli -a secret
+# Re-build api & web after changes
+docker-compose build api web
 ```
 
 ## MVP
