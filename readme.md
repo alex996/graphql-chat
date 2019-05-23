@@ -14,6 +14,9 @@ GraphQL chat API & UI monorepo.
 # - launch api & web
 npm run up
 
+# Only run api & web
+npm run dev
+
 # Stop containers
 npm run stop
 
@@ -66,9 +69,9 @@ As a user, I can
 
 ### BE
 
-- Node + Express
-- Passport + express-session + Redis
+- Node + Express + TS
 - GraphQL + Apollo Server + WS
+- express-session + Redis
 - MongoDB + Mongoose
 
 ### FE
@@ -80,12 +83,4 @@ As a user, I can
 ### DevOps
 
 - nginx
-- Docker
-
-## Architecture
-
-TODO
-
-- deployment
-- scaling
-- security
+- Docker + docker-compose
