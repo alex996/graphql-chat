@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response } from './types'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 

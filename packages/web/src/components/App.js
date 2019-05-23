@@ -5,30 +5,20 @@ import client from '../apollo'
 
 const GET_USERS = gql`
   {
-    users {
-      id
-      email
-      name
-    }
+    _
   }
 `
 
-const Users = props => {
-  const { data, error, loading } = useQuery(GET_USERS)
+const Users = () => {
+  const { error, loading } = useQuery(GET_USERS)
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :-(</p>
 
-  return (
-    <ul>
-      {data.users.map(user => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
-  )
+  return <p>It works</p>
 }
 
-const App = props => (
+const App = () => (
   <ApolloProvider client={client}>
     <Users />
   </ApolloProvider>

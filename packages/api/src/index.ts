@@ -6,6 +6,7 @@ import Redis from 'ioredis'
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+import schemaDirectives from './directives'
 import {
   DB_URI,
   DB_OPTIONS,
@@ -39,6 +40,7 @@ import {
       typeDefs,
       // @ts-ignore: See apollo-server#1775
       resolvers,
+      schemaDirectives,
       ...APOLLO_OPTIONS
     })
 

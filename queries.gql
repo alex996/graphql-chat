@@ -1,0 +1,69 @@
+mutation {
+  signUp(
+    email: "alex@gmail.com"
+    username: "alex"
+    name: "Alex"
+    password: "Secret12"
+  ) {
+    id
+  }
+}
+
+mutation {
+  signIn(email: "alex@gmail.com", password: "Secret12") {
+    id
+  }
+}
+
+mutation {
+  signOut
+}
+
+{
+  me {
+    id
+    name
+    email
+  }
+}
+
+{
+  users {
+    id
+  }
+}
+
+{
+  user(id: "5ce700eb4b317141fc402006") {
+    id
+  }
+}
+
+mutation {
+  startChat(userIds: ["5ce701a4f88411442f4388b6"]) {
+    id
+    title
+  }
+}
+
+{
+  users {
+    id
+    name
+    email
+    chats {
+      id
+      users {
+        id
+        name
+        email
+      }
+      messages {
+        id
+      }
+      lastMessage {
+        id
+      }
+    }
+  }
+}
