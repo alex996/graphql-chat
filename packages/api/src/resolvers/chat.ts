@@ -2,7 +2,7 @@ import Joi from '@hapi/joi'
 import { UserInputError } from 'apollo-server-express'
 import { startChat } from '../validators'
 import { User, Chat, Message } from '../models'
-import { Request, ChatDocument } from '../types'
+import { Request, ChatDocument, UserDocument, MessageDocument } from '../types'
 
 export default {
   Mutation: {
@@ -10,7 +10,7 @@ export default {
       root: object,
       args: { title: string; userIds: [string] },
       { req }: { req: Request }
-    ) => {
+    ): Promise<ChatDocument> => {
       const { userId } = req.session
       const { title, userIds } = args
 
@@ -40,14 +40,14 @@ export default {
     }
   },
   Chat: {
-    messages: (chat: ChatDocument) => {
+    messages: (chat: ChatDocument): Promise<MessageDocument[]> => {
       // TODO: pagination, projection
-      return Message.find({ chat: chat.id })
+      return Message.find({ chat: chat.id }).exec()
     },
-    users: async (chat: ChatDocument) => {
+    users: async (chat: ChatDocument): Promise<UserDocument[]> => {
       return (await chat.populate('users').execPopulate()).users
     },
-    lastMessage: async (chat: ChatDocument) => {
+    lastMessage: async (chat: ChatDocument): Promise<MessageDocument> => {
       return (await chat.populate('lastMessage').execPopulate()).lastMessage
     }
   }

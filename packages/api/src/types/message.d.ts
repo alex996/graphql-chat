@@ -1,7 +1,8 @@
-import { Document, Types } from 'mongoose'
+import { Document } from 'mongoose'
+import { UserDocument, ChatDocument } from './'
 
 export interface MessageDocument extends Document {
   body: string;
-  sender: Types.ObjectId;
-  chat: Types.ObjectId;
+  sender: [UserDocument['_id']];
+  chat: ChatDocument['_id'];
 }

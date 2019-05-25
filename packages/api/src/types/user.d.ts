@@ -6,7 +6,7 @@ export interface UserDocument extends Document {
   email: string;
   username: string;
   password: string;
-  chats: [ChatDocument];
+  chats: [ChatDocument['_id']];
   matchesPassword: (password: string) => boolean;
 }
 
