@@ -95,3 +95,33 @@ docker rm $(docker ps -a -q)
 ## Nginx
 
 - [basic setup](https://gist.github.com/soheilhy/8b94347ff8336d971ad0)
+
+## Testing
+
+1. `jest` + `ts-jest` & [`@shelf/jest-mongodb`](https://jestjs.io/docs/en/mongodb) presets
+
+```js
+// jest.config.js
+module.exports = merge.recursive(ts, mongo, { ... })
+```
+
+- parallel, but doesn't expose options for a one-time global setup
+  - `globalSetup`/`globalTeardown` run in separate processes (can't share `global` vars)
+  - `setupFiles`/`setupFilesAfterEnv` run for **each** test file (one mongod process per file (!))
+- requires `mongodb-memory-server` with a mongod binary (70+ MB) which needs to be cached in CI
+- could run a `pretest` script, but `posttest` is not guaranteed to be reached
+- could make it work with a [custom `testEnvironment`](https://github.com/facebook/jest/issues/3832#issuecomment-375544901)
+
+allow for shared global setup - (`globalSetup`/`globalTeardown` run in separate processes)
+
+2. `mocha` + `ts-node` + `mongodb-memory-server`
+
+```sh
+mocha -r ts-node/register src/**/__tests/*.ts
+```
+
+- sequential, but allows for a one-time [global setup/teardown](https://github.com/mochajs/mocha/issues/1460#issuecomment-93862610)
+
+3. `apollo-server-testing`
+
+- does not respect `express` middleware (and thus `express-session`)

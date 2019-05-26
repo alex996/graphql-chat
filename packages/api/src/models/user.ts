@@ -56,7 +56,7 @@ const userSchema = new Schema(
   }
 )
 
-userSchema.pre('save', async function (this: UserDocument) {
+userSchema.pre<UserDocument>('save', async function () {
   if (this.isModified('password')) {
     this.password = await hash(this.password, 10)
   }

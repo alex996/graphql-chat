@@ -10,7 +10,8 @@
     "predev": "rimraf dist",
     "dev": "ts-node-dev --transpileOnly --no-notify src",
     "prebuild": "rimraf dist",
-    "build": "tsc"
+    "build": "tsc -p tsconfig.prod.json",
+    "test": "jest"
   },
   "homepage": "https://github.com/alex996/graphql-chat#readme",
   "repository": {
@@ -40,10 +41,16 @@
     "@types/graphql": "^14.2.0",
     "@types/hapi__joi": "^15.0.1",
     "@types/ioredis": "^4.0.10",
+    "@types/jest": "^24.0.13",
     "@types/mongodb": "^3.1.27",
     "@types/mongoose": "^5.5.1",
     "@types/node": "^12.0.2",
+    "@types/supertest": "^2.0.7",
+    "jest": "^24.8.0",
+    "mockingoose": "^2.13.0",
     "rimraf": "^2.6.3",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
     "ts-node-dev": "^1.0.0-pre.39",
     "typescript": "^3.4.5"
   }

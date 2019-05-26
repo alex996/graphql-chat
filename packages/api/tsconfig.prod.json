@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  // __tests__ is included in tsconfig.json to resolve @types/jest in the IDE
+  "exclude": ["src/**/__tests__"]
+}

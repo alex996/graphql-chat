@@ -25,7 +25,7 @@ const chatSchema = new Schema(
 
 const USER_LIMIT = 5
 
-chatSchema.pre('save', async function (this: ChatDocument) {
+chatSchema.pre<ChatDocument>('save', async function () {
   if (!this.title) {
     const users = await User.where('_id')
       .in(this.users)
