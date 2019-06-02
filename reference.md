@@ -110,18 +110,18 @@ module.exports = merge.recursive(ts, mongo, { ... })
   - `setupFiles`/`setupFilesAfterEnv` run for **each** test file (one mongod process per file (!))
 - requires `mongodb-memory-server` with a mongod binary (70+ MB) which needs to be cached in CI
 - could run a `pretest` script, but `posttest` is not guaranteed to be reached
-- could make it work with a [custom `testEnvironment`](https://github.com/facebook/jest/issues/3832#issuecomment-375544901)
-
-allow for shared global setup - (`globalSetup`/`globalTeardown` run in separate processes)
+- could make it work with a [custom `testEnvironment`](https://github.com/facebook/jest/issues/3832#issuecomment-375544901) (see [this](https://itnext.io/parallel-testing-a-graphql-server-with-jest-44e206f3e7d2))
 
 2. `mocha` + `ts-node` + `mongodb-memory-server`
 
 ```sh
-mocha -r ts-node/register src/**/__tests/*.ts
+mocha -r ts-node/register src/**/__tests__/*.ts
 ```
 
 - sequential, but allows for a one-time [global setup/teardown](https://github.com/mochajs/mocha/issues/1460#issuecomment-93862610)
+- cannot require [`.d.ts` files](https://github.com/TypeStrong/ts-node/issues/797), so can't declare global funcs
+- poor linting, `"plugin:mocha/recommended"` doesn't work, use `"env": ["mocha": true]`
 
 3. `apollo-server-testing`
 
-- does not respect `express` middleware (and thus `express-session`)
+- doesn't respect `express` middleware (and thus `express-session`, thus no auth

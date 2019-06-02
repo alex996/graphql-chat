@@ -1,37 +1,43 @@
 import request, { Test } from 'supertest'
-import mockingoose from 'mockingoose'
-import { User } from '../src/models'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+import mongoose from 'mongoose'
 import createApp from '../src/app'
 
-const { app, server } = createApp()
+const {
+  app,
+  server: { graphqlPath }
+} = createApp()
 
 const req = request(app)
 
-global.graphql = (): Test => req.post(server.graphqlPath)
+global.graphql = (): Test => req.post(graphqlPath)
 
-// prettier-ignore
-global.signIn = async (user: { id: string; password: string; email: string }): Promise<Test> => {
-  const { password, email } = user
-
-  mockingoose(User).toReturn(
-    {
-      ...user,
-      password: await User.hash(password)
-    },
-    'findOne'
-  )
-
-  return global.graphql().send({
+global.signIn = (email: string, password: string) =>
+  global.graphql().send({
     query: `
-        mutation {
-          signIn(
-            email: "${email}",
-            password: "${password}"
-          ) {
-            id
-            email
+          mutation {
+            signIn(
+              email: "${email}",
+              password: "${password}"
+            ) {
+              id
+            }
           }
-        }
-      `
+        `
   })
-}
+
+let mongod: MongoMemoryServer
+
+beforeAll(async () => {
+  mongod = new MongoMemoryServer()
+
+  const uri = await mongod.getConnectionString()
+
+  await mongoose.connect(uri, { useNewUrlParser: true })
+})
+
+afterAll(async () => {
+  await mongoose.disconnect()
+
+  await mongod.stop()
+})
