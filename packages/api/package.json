@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "@hapi/joi": "^15.0.3",
-    "apollo-server-express": "^2.5.0",
+    "apollo-server-express": "^2.6.1",
     "bcryptjs": "^2.4.3",
     "connect-redis": "^3.4.1",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "express-session": "^1.16.1",
-    "graphql": "^14.3.0",
-    "ioredis": "^4.9.3",
-    "mongoose": "^5.5.7",
+    "graphql": "^14.3.1",
+    "ioredis": "^4.9.5",
+    "mongoose": "^5.5.12",
     "source-map-support": "^0.5.12"
   },
   "devDependencies": {
@@ -40,11 +40,11 @@
     "@types/express-session": "^1.15.12",
     "@types/graphql": "^14.2.0",
     "@types/hapi__joi": "^15.0.1",
-    "@types/ioredis": "^4.0.10",
+    "@types/ioredis": "^4.0.11",
     "@types/jest": "^24.0.13",
-    "@types/mongodb": "^3.1.27",
-    "@types/mongoose": "^5.5.1",
-    "@types/node": "^12.0.2",
+    "@types/mongodb": "^3.1.28",
+    "@types/mongoose": "^5.5.3",
+    "@types/node": "^12.0.4",
     "@types/supertest": "^2.0.7",
     "jest": "^24.8.0",
     "mockingoose": "^2.13.0",
@@ -52,6 +52,6 @@
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "ts-node-dev": "^1.0.0-pre.39",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   }
 }
