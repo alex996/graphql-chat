@@ -12,4 +12,5 @@ export interface UserDocument extends Document {
 
 export interface UserModel extends Model<UserDocument> {
   doesntExist: (options: object) => boolean;
+  hash: (password: string) => string;
 }

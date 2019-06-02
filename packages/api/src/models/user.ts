@@ -58,7 +58,7 @@ const userSchema = new Schema(
 
 userSchema.pre<UserDocument>('save', async function () {
   if (this.isModified('password')) {
-    this.password = await hash(this.password, 10)
+    this.password = await User.hash(this.password)
   }
 })
 
@@ -67,6 +67,9 @@ userSchema.statics.doesntExist = async function (
 ): Promise<boolean> {
   return (await this.where(options).countDocuments()) === 0
 }
+
+userSchema.statics.hash = (password: string): Promise<string> =>
+  hash(password, 10)
 
 userSchema.methods.matchesPassword = function (
   password: string
