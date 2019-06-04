@@ -3,6 +3,7 @@ import { UserInputError } from 'apollo-server-express'
 import { startChat } from '../validators'
 import { User, Chat, Message } from '../models'
 import { Request, ChatDocument, UserDocument, MessageDocument } from '../types'
+import { fields } from '../utils'
 
 export default {
   Mutation: {
@@ -40,15 +41,31 @@ export default {
     }
   },
   Chat: {
-    messages: (chat: ChatDocument): Promise<MessageDocument[]> => {
-      // TODO: pagination, projection
-      return Message.find({ chat: chat.id }).exec()
+    messages: (
+      chat: ChatDocument,
+      args: any,
+      ctx: any,
+      info: any
+    ): Promise<MessageDocument[]> => {
+      // TODO: pagination
+      return Message.find({ chat: chat.id }, fields(info)).exec()
     },
-    users: async (chat: ChatDocument): Promise<UserDocument[]> => {
-      return (await chat.populate('users').execPopulate()).users
+    users: async (
+      chat: ChatDocument,
+      args: any,
+      ctx: any,
+      info: any
+    ): Promise<UserDocument[]> => {
+      return (await chat.populate('users', fields(info)).execPopulate()).users
     },
-    lastMessage: async (chat: ChatDocument): Promise<MessageDocument> => {
-      return (await chat.populate('lastMessage').execPopulate()).lastMessage
+    lastMessage: async (
+      chat: ChatDocument,
+      args: any,
+      ctx: any,
+      info: any
+    ): Promise<MessageDocument> => {
+      return (await chat.populate('lastMessage', fields(info)).execPopulate())
+        .lastMessage
     }
   }
 }

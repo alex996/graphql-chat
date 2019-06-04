@@ -1,30 +1,38 @@
 import Joi from '@hapi/joi'
+import { Request, Response, UserDocument, ChatDocument } from '../types'
 import { signUp, signIn, objectId } from '../validators'
 import { attemptSignIn, signOut } from '../auth'
 import { User } from '../models'
-import { Request, Response, UserDocument, ChatDocument } from '../types'
+import { fields } from '../utils'
 
 export default {
   Query: {
     me: (
       root: any,
       args: any,
-      { req }: { req: Request }
+      { req }: { req: Request },
+      info: any
     ): Promise<UserDocument | null> => {
-      // TODO: projection
-      return User.findById(req.session.userId).exec()
+      return User.findById(req.session.userId, fields(info)).exec()
     },
-    users: (): Promise<UserDocument[]> => {
-      // TODO: projection, pagination
-      return User.find({}).exec()
+    users: (
+      root: any,
+      args: any,
+      ctx: any,
+      info: any
+    ): Promise<UserDocument[]> => {
+      // TODO: pagination
+      return User.find({}, fields(info)).exec()
     },
     user: async (
       root: any,
-      args: { id: string }
+      args: { id: string },
+      ctx: any,
+      info: any
     ): Promise<UserDocument | null> => {
-      // TODO: projection
       await Joi.validate(args, objectId)
-      return User.findById(args.id)
+
+      return User.findById(args.id, fields(info))
     }
   },
   Mutation: {
@@ -33,7 +41,6 @@ export default {
       args: { email: string; username: string; name: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
-      // TODO: projection
       await Joi.validate(args, signUp, { abortEarly: false })
 
       const user = await User.create(args)
@@ -47,7 +54,6 @@ export default {
       args: { email: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
-      // TODO: projection
       await Joi.validate(args, signIn, { abortEarly: false })
 
       const user = await attemptSignIn(args.email, args.password)
@@ -65,9 +71,14 @@ export default {
     }
   },
   User: {
-    chats: async (user: UserDocument): Promise<ChatDocument[]> => {
-      // TODO: should not be able to list other ppl's chats or read their msgs!
-      return (await user.populate('chats').execPopulate()).chats
+    chats: async (
+      user: UserDocument,
+      args: any,
+      ctx: any,
+      info: any
+    ): Promise<ChatDocument[]> => {
+      // TODO: should not be able to list other ppl's chats or read their msgs! Also, paginate.
+      return (await user.populate('chats', fields(info)).execPopulate()).chats
     }
   }
 }
