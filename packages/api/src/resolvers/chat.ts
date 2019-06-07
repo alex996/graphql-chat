@@ -27,7 +27,12 @@ export default {
 
       userIds.push(userId)
 
-      // TODO: should not be able to create a chat if already exists
+      const chatExists = await Chat.where('users', userIds).any()
+
+      if (chatExists) {
+        throw new UserInputError('Chat with given User IDs already exists.')
+      }
+
       const chat = await Chat.create({ title, users: userIds })
 
       await User.updateMany(
