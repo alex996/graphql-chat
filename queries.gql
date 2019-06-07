@@ -67,3 +67,9 @@ mutation {
     }
   }
 }
+
+mutation {
+  sendMessage(chatId: "5cf9cd1c99dfe743edcc3158", body: "Hey man") {
+    id
+  }
+}

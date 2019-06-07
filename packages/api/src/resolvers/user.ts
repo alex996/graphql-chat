@@ -74,11 +74,21 @@ export default {
     chats: async (
       user: UserDocument,
       args: any,
-      ctx: any,
+      { req }: { req: Request },
       info: any
     ): Promise<ChatDocument[]> => {
-      // TODO: should not be able to list other ppl's chats or read their msgs! Also, paginate.
-      return (await user.populate('chats', fields(info)).execPopulate()).chats
+      // TODO: paginate
+      return (await user
+        .populate({
+          path: 'chats',
+          match: {
+            users: {
+              $in: req.session.userId
+            }
+          },
+          select: fields(info)
+        })
+        .execPopulate()).chats
     }
   }
 }
