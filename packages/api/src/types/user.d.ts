@@ -7,10 +7,13 @@ export interface UserDocument extends Document {
   username: string;
   password: string;
   chats: [ChatDocument['_id']];
-  matchesPassword: (password: string) => boolean;
+  matchesPassword: (password: string) => Promise<boolean>;
 }
 
-export interface UserModel extends Model<UserDocument> {
-  doesntExist: (options: object) => boolean;
-  hash: (password: string) => string;
+interface UserQueryHelpers {
+  none: () => Promise<boolean>;
+}
+
+export interface UserModel extends Model<UserDocument, UserQueryHelpers> {
+  hash: (password: string) => Promise<string>;
 }
