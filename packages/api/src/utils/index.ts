@@ -1,1 +1,1 @@
-export * from './projection'
+export * from './graphql'

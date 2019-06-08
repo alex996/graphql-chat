@@ -1,5 +1,3 @@
-import { Request, Response } from './types'
-
 const ONE_DAY = 1000 * 60 * 60 * 24
 
 export const {
@@ -34,6 +32,7 @@ export const REDIS_OPTIONS = {
   host: REDIS_HOST,
   port: +REDIS_PORT,
   password: REDIS_PASSWORD
+  // TODO: retry_strategy
 }
 
 export const SESS_OPTIONS = {
@@ -53,9 +52,8 @@ export const APOLLO_OPTIONS = {
   playground: IN_PROD
     ? false
     : {
-      settings: {
-        'request.credentials': 'include'
+        settings: {
+          'request.credentials': 'include'
+        }
       }
-    },
-  context: ({ req, res }: { req: Request; res: Response }) => ({ req, res })
 }

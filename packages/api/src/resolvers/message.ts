@@ -1,10 +1,17 @@
 import Joi from '@hapi/joi'
 import { Types } from 'mongoose'
-import { UserInputError, ForbiddenError } from 'apollo-server-express'
+import {
+  UserInputError,
+  ForbiddenError,
+  withFilter
+} from 'apollo-server-express'
 import { Request, MessageDocument, UserDocument } from '../types'
 import { sendMessage } from '../validators'
 import { Chat, Message } from '../models'
-import { fields } from '../utils'
+import { fields, hasSubfields } from '../utils'
+import pubsub from '../pubsub'
+
+const MESSAGE_SENT = 'MESSAGE_SENT'
 
 export default {
   Mutation: {
@@ -34,10 +41,38 @@ export default {
         chat: chatId
       })
 
+      pubsub.publish(MESSAGE_SENT, { messageSent: message, users: chat.users })
+
       chat.lastMessage = message
       await chat.save()
 
       return message
+    }
+  },
+  Subscription: {
+    messageSent: {
+      resolve: (
+        { messageSent }: { messageSent: any },
+        args: any,
+        ctx: any,
+        info: any
+      ) => {
+        return hasSubfields(info)
+          ? Message.findById(messageSent._id, fields(info))
+          : messageSent
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(MESSAGE_SENT),
+        async (
+          { messageSent, users }: { messageSent: any; users: [string] },
+          { chatId }: { chatId: string },
+          { req }: { req: Request }
+        ) => {
+          return (
+            messageSent.chat === chatId && users.includes(req.session.userId)
+          )
+        }
+      )
     }
   },
   Message: {
