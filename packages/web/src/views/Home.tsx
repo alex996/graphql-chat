@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import { Box, Typography } from '@material-ui/core'
 
 const Home = () => (
-  <Fragment>
-    <h1>Home</h1>
-    <button>Logout</button>
-  </Fragment>
+  <Box marginTop={2}>
+    <Typography variant='h6'>Home</Typography>
+  </Box>
 )
 
 export default Home

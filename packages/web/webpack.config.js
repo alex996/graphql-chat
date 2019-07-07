@@ -12,7 +12,10 @@ module.exports = (env, { mode }) => {
       filename: inDev ? '[name].js' : '[name].[contenthash].js'
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js'],
+      alias: {
+        '@material-ui/core': '@material-ui/core/es'
+      }
     },
     module: {
       rules: [{ test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/ }]
