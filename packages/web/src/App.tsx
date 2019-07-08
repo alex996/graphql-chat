@@ -1,5 +1,5 @@
 import React from 'react'
-import { CssBaseline, Container } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
 import { styled, Theme } from '@material-ui/core/styles'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'

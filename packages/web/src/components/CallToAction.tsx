@@ -1,17 +1,18 @@
 import React from 'react'
-import { makeStyles, Theme, Fab } from '@material-ui/core'
-import { FabProps } from '@material-ui/core/Fab'
+import { makeStyles, Theme, Button } from '@material-ui/core'
+import { ButtonProps } from '@material-ui/core/Button'
 import { AdapterLink } from './'
 
 // FIXME: using hook API until material-ui@15695 is fixed
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    marginBottom: theme.spacing(2),
-    width: '100%'
+    width: '100%',
+    borderRadius: theme.spacing(4),
+    padding: theme.spacing(1.5)
   }
 }))
 
-interface Props extends FabProps {
+interface Props extends ButtonProps {
   to: string
 }
 
@@ -19,10 +20,10 @@ const CallToAction = (props: Props) => {
   const classes = useStyles()
   return (
     // @ts-ignore FIXME:
-    <Fab
+    <Button
       className={classes.root}
       component={AdapterLink}
-      variant='extended'
+      variant='contained'
       color='primary'
       size='large'
       {...props}
