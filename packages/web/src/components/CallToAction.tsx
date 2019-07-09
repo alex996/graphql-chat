@@ -13,16 +13,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface Props extends ButtonProps {
-  to: string
+  to?: string
 }
 
+// A full-width fab, optionally outlined
 const CallToAction = (props: Props) => {
   const classes = useStyles()
   return (
-    // @ts-ignore FIXME:
     <Button
+      {...props.to && { component: AdapterLink }}
       className={classes.root}
-      component={AdapterLink}
       variant='contained'
       color='primary'
       size='large'
