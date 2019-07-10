@@ -2,12 +2,11 @@ import React, { useState, Fragment } from 'react'
 import {
   Drawer,
   IconButton,
-  Link,
-  List as MuiList,
+  List,
   ListItem,
-  ListItemText
+  ListItemText,
+  makeStyles
 } from '@material-ui/core'
-import { styled } from '@material-ui/styles'
 import { AdapterLink } from '../../components'
 import { Menu } from '../../icons'
 
@@ -30,11 +29,14 @@ const links = {
   ]
 }
 
-const List = styled(MuiList)({
-  width: 250
+const useStyles = makeStyles({
+  list: {
+    width: 250
+  }
 })
 
 const SideBar = () => {
+  const classes = useStyles()
   const [open, setOpen] = useState(false)
   const handleToggle = () => setOpen(!open)
 
@@ -44,16 +46,16 @@ const SideBar = () => {
         <Menu />
       </IconButton>
       <Drawer anchor='left' open={open} onClose={handleToggle}>
-        <List>
+        <List component='nav' className={classes.list}>
           {links.guest.map(({ text, to }, index) => (
-            <ListItem button key={index}>
-              <ListItemText
-                primary={
-                  <Link component={AdapterLink} to={to}>
-                    {text}
-                  </Link>
-                }
-              />
+            <ListItem
+              button
+              to={to}
+              key={index}
+              component={AdapterLink}
+              onClick={handleToggle}
+            >
+              <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>

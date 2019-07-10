@@ -19,7 +19,8 @@ const client = new ApolloClient({
     }),
     new HttpLink({
       // @ts-ignore
-      uri: API_URI
+      uri: API_URI,
+      credentials: 'same-origin'
     })
   ]),
   cache: new InMemoryCache()

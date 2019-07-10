@@ -3,7 +3,6 @@ import { makeStyles, Theme, Button } from '@material-ui/core'
 import { ButtonProps } from '@material-ui/core/Button'
 import { AdapterLink } from './'
 
-// FIXME: using hook API until material-ui@15695 is fixed
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
