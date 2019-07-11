@@ -1,4 +1,5 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, ReactNode } from 'react'
+import gql from 'graphql-tag'
 import {
   Drawer,
   IconButton,
@@ -7,32 +8,11 @@ import {
   ListItemText,
   makeStyles
 } from '@material-ui/core'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
 import { AdapterLink } from '../../components'
-import { isLoggedIn } from '../../auth'
+import { isLoggedIn, forgetLogin } from '../../auth'
 import { Menu } from '../../icons'
-
-const links = {
-  auth: [
-    {
-      text: 'Home',
-      to: '/home'
-    },
-    {
-      text: 'Profile',
-      to: '/profile'
-    }
-  ],
-  guest: [
-    {
-      text: 'Login',
-      to: '/login'
-    },
-    {
-      text: 'Register',
-      to: '/register'
-    }
-  ]
-}
 
 const useStyles = makeStyles({
   list: {
@@ -40,12 +20,105 @@ const useStyles = makeStyles({
   }
 })
 
-const SideBar = () => {
+const LOG_OUT = gql`
+  mutation {
+    signOut
+  }
+`
+
+interface LinkListProps {
+  links: {
+    to?: string
+    text: string
+    onClick: VoidFunction
+    disabled?: boolean
+  }[]
+}
+
+const LinkList = ({ links }: LinkListProps) => {
   const classes = useStyles()
+
+  return (
+    <List component='nav' className={classes.list}>
+      {links.map(({ to, text, ...rest }, index) => (
+        <ListItem
+          button
+          key={index}
+          {...to && {
+            to,
+            component: AdapterLink
+          }}
+          {...rest}
+        >
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+  )
+}
+
+interface GuestListProps {
+  onToggle: VoidFunction
+}
+
+const GuestList = ({ onToggle }: GuestListProps) => {
+  const links = [
+    {
+      to: '/login',
+      text: 'Log In',
+      onClick: onToggle
+    },
+    {
+      to: '/register',
+      text: 'Register',
+      onClick: onToggle
+    }
+  ]
+
+  return <LinkList links={links} />
+}
+
+interface AuthListProps extends RouteComponentProps {
+  onToggle: VoidFunction
+}
+
+const AuthList = withRouter(({ onToggle, history }: AuthListProps) => {
+  const [logOut, { loading }] = useMutation(LOG_OUT)
+
+  const handleLogout = async () => {
+    await logOut()
+
+    forgetLogin()
+
+    onToggle()
+
+    history.push('/login')
+  }
+
+  const links = [
+    {
+      to: '/home',
+      text: 'Home',
+      onClick: onToggle
+    },
+    {
+      to: '/profile',
+      text: 'Profile',
+      onClick: onToggle
+    },
+    {
+      text: 'Log Out',
+      onClick: handleLogout,
+      disabled: loading
+    }
+  ]
+
+  return <LinkList links={links} />
+})
+
+const SideBar = () => {
   const [open, setOpen] = useState(false)
   const handleToggle = () => setOpen(!open)
-
-  const navLinks = isLoggedIn() ? links.auth : links.guest
 
   return (
     <Fragment>
@@ -53,19 +126,11 @@ const SideBar = () => {
         <Menu />
       </IconButton>
       <Drawer anchor='left' open={open} onClose={handleToggle}>
-        <List component='nav' className={classes.list}>
-          {navLinks.map(({ text, to }, index) => (
-            <ListItem
-              button
-              to={to}
-              key={index}
-              component={AdapterLink}
-              onClick={handleToggle}
-            >
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        {isLoggedIn() ? (
+          <AuthList onToggle={handleToggle} />
+        ) : (
+          <GuestList onToggle={handleToggle} />
+        )}
       </Drawer>
     </Fragment>
   )
