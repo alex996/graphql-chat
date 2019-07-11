@@ -3,13 +3,13 @@ import { styled, Theme } from '@material-ui/core/styles'
 import { Box, Grid, Paper as MuiPaper } from '@material-ui/core'
 
 const Paper = styled(MuiPaper)(({ theme }: { theme: Theme }) => ({
-  padding: theme.spacing(3),
-  maxWidth: 420
+  padding: theme.spacing(2),
+  maxWidth: 400
 }))
 
 const PaperBox = (props: any) => (
-  <Box marginTop={10} marginBottom={10} padding={3} flex={1}>
-    <Grid container justify='center' spacing={6}>
+  <Box marginTop={10} marginBottom={10} padding={2} flex={1}>
+    <Grid container justify='center' spacing={4}>
       <Grid item>
         <Paper elevation={2} {...props} />
       </Grid>

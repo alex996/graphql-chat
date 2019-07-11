@@ -8,6 +8,7 @@ import {
   makeStyles
 } from '@material-ui/core'
 import { AdapterLink } from '../../components'
+import { isLoggedIn } from '../../auth'
 import { Menu } from '../../icons'
 
 const links = {
@@ -15,6 +16,10 @@ const links = {
     {
       text: 'Home',
       to: '/home'
+    },
+    {
+      text: 'Profile',
+      to: '/profile'
     }
   ],
   guest: [
@@ -40,6 +45,8 @@ const SideBar = () => {
   const [open, setOpen] = useState(false)
   const handleToggle = () => setOpen(!open)
 
+  const navLinks = isLoggedIn() ? links.auth : links.guest
+
   return (
     <Fragment>
       <IconButton edge='start' color='inherit' onClick={handleToggle}>
@@ -47,7 +54,7 @@ const SideBar = () => {
       </IconButton>
       <Drawer anchor='left' open={open} onClose={handleToggle}>
         <List component='nav' className={classes.list}>
-          {links.guest.map(({ text, to }, index) => (
+          {navLinks.map(({ text, to }, index) => (
             <ListItem
               button
               to={to}

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Box, Grid, Typography } from '@material-ui/core'
 import { CallToAction } from '../components'
+import { isLoggedIn } from '../auth'
 
 const Welcome = () => (
   <Box marginTop={10} marginBottom={10} padding={3} flex={1}>
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
+    <Grid container spacing={6} justify='center'>
+      <Grid item>
         <Typography variant='h3' align='center' gutterBottom>
           Welcome
         </Typography>
@@ -13,10 +14,14 @@ const Welcome = () => (
           Real-time chat app built with MERN stack and GraphQL
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Grid container justify='center'>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <Grid container spacing={2} direction='row-reverse'>
+      <Grid item xs={12} sm={6} lg={4} xl={3}>
+        <Grid container spacing={2} direction='row-reverse' justify='center'>
+          {isLoggedIn() ? (
+            <Grid item xs={12} md={6}>
+              <CallToAction to='/home'>Home</CallToAction>
+            </Grid>
+          ) : (
+            <Fragment>
               <Grid item xs={12} md={6}>
                 <CallToAction to='/login'>Log In</CallToAction>
               </Grid>
@@ -25,8 +30,8 @@ const Welcome = () => (
                   Register
                 </CallToAction>
               </Grid>
-            </Grid>
-          </Grid>
+            </Fragment>
+          )}
         </Grid>
       </Grid>
     </Grid>

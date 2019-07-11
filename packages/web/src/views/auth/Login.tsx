@@ -1,16 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react'
+import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
-import { RouteComponentProps, Redirect, Link } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { styled } from '@material-ui/core/styles'
 import { useMutation } from '@apollo/react-hooks'
-import {
-  Grid,
-  TextField,
-  Typography,
-  Avatar as MuiAvatar
-} from '@material-ui/core'
-import { CallToAction } from '../../components'
+import { Grid, Avatar as MuiAvatar, TextField, Link } from '@material-ui/core'
+import { CallToAction, AdapterLink } from '../../components'
 import { isLoggedIn, rememberLogin } from '../../auth'
+import { useInput } from '../../hooks'
 import { Person } from '../../icons'
 import { PaperBox } from './'
 
@@ -36,19 +32,13 @@ const Login = (props: RouteComponentProps) => {
     return <Redirect to='/home' />
   }
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleEmailChange = (e: ChangeEvent) =>
-    setEmail((e.target as HTMLInputElement).value)
-
-  const handlePasswordChange = (e: ChangeEvent) =>
-    setPassword((e.target as HTMLInputElement).value)
+  const email = useInput()
+  const password = useInput()
 
   const [logIn, { loading }] = useMutation(LOG_IN, {
     variables: {
-      email,
-      password
+      email: email.value,
+      password: password.value
     }
   })
 
@@ -68,7 +58,7 @@ const Login = (props: RouteComponentProps) => {
   return (
     <PaperBox>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={3} justify='center'>
+        <Grid container spacing={2} justify='center'>
           <Grid item>
             <Avatar>
               <Icon />
@@ -76,37 +66,43 @@ const Login = (props: RouteComponentProps) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              {...email}
               type='email'
               label='Email'
+              variant='outlined'
               placeholder='john.smith@example.com'
-              onChange={handleEmailChange}
               fullWidth
               required
             />
             <TextField
+              {...password}
               type='password'
               label='Password'
+              variant='outlined'
               placeholder={'*'.repeat(12)}
-              onChange={handlePasswordChange}
               margin='normal'
               fullWidth
               required
             />
-          </Grid>
-          <Grid item>
-            <Typography>
-              Forgot password? <Link to='/reset'>Reset</Link>
-            </Typography>
           </Grid>
           <Grid item xs={12}>
             <CallToAction type='submit' disabled={loading}>
               Login
             </CallToAction>
           </Grid>
-          <Grid item>
-            <Typography>
-              Don't have an account? <Link to='/register'>Register</Link>
-            </Typography>
+          <Grid item xs={12}>
+            <Grid container justify='space-between'>
+              <Grid item>
+                <Link component={AdapterLink} to='/reset'>
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link component={AdapterLink} to='/register' variant='body2'>
+                  Don't have an account?
+                </Link>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </form>
