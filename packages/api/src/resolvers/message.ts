@@ -1,5 +1,6 @@
 import { Types } from 'mongoose'
 import {
+  IResolvers,
   UserInputError,
   ForbiddenError,
   withFilter
@@ -12,10 +13,10 @@ import pubsub from '../pubsub'
 
 const MESSAGE_SENT = 'MESSAGE_SENT'
 
-export default {
+const resolvers: IResolvers = {
   Mutation: {
     sendMessage: async (
-      root: any,
+      root,
       args: { chatId: string; body: string },
       { req }: { req: Request }
     ): Promise<MessageDocument> => {
@@ -51,10 +52,10 @@ export default {
   Subscription: {
     messageSent: {
       resolve: (
-        { messageSent }: { messageSent: any },
-        args: any,
-        ctx: any,
-        info: any
+        { messageSent }: { messageSent: MessageDocument },
+        args,
+        ctx,
+        info
       ) => {
         return hasSubfields(info)
           ? Message.findById(messageSent._id, fields(info))
@@ -63,7 +64,7 @@ export default {
       subscribe: withFilter(
         () => pubsub.asyncIterator(MESSAGE_SENT),
         async (
-          { messageSent, users }: { messageSent: any; users: [string] },
+          { messageSent, users }: { messageSent: MessageDocument; users: [string] },
           { chatId }: { chatId: string },
           { req }: { req: Request }
         ) => {
@@ -77,12 +78,14 @@ export default {
   Message: {
     sender: async (
       message: MessageDocument,
-      args: any,
-      ctx: any,
-      info: any
+      args,
+      ctx,
+      info
     ): Promise<UserDocument> => {
       return (await message.populate('sender', fields(info)).execPopulate())
         .sender
     }
   }
 }
+
+export default resolvers

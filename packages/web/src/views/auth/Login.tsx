@@ -99,7 +99,7 @@ const Login = (props: RouteComponentProps) => {
               </Grid>
               <Grid item>
                 <Link component={AdapterLink} to='/register' variant='body2'>
-                  Don't have an account?
+                  {'Don\'t have an account?'}
                 </Link>
               </Grid>
             </Grid>

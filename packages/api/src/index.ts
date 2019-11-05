@@ -5,7 +5,7 @@ import Redis from 'ioredis'
 import http from 'http'
 import createApp from './app'
 import { DB_URI, DB_OPTIONS, REDIS_OPTIONS, HTTP_PORT } from './config'
-//
+
 ;(async () => {
   try {
     await mongoose.connect(DB_URI, DB_OPTIONS)

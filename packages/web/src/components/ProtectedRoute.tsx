@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import {
   RouteProps,
   Redirect,
@@ -8,6 +8,7 @@ import {
 
 interface ProtectedRouteProps extends RouteProps {
   auth: boolean
+  component: FC<RouteComponentProps>
 }
 
 const ProtectedRoute = ({
@@ -15,16 +16,13 @@ const ProtectedRoute = ({
   component: Component,
   ...rest
 }: ProtectedRouteProps) => {
-  const handleRender = (props: RouteComponentProps) => {
+  return <Route {...rest} render={(props: RouteComponentProps) => {
     if (auth) {
-      // @ts-ignore FIXME:
       return <Component {...props} />
     }
 
     return <Redirect to='/login' />
-  }
-
-  return <Route {...rest} render={handleRender} />
+  }} />
 }
 
 export default ProtectedRoute

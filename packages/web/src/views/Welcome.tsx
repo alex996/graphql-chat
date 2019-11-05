@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Box, Grid, Typography } from '@material-ui/core'
 import { CallToAction } from '../components'
 import { isLoggedIn } from '../auth'
@@ -21,7 +21,7 @@ const Welcome = () => (
               <CallToAction to='/home'>Home</CallToAction>
             </Grid>
           ) : (
-            <Fragment>
+            <>
               <Grid item xs={12} md={6}>
                 <CallToAction to='/login'>Log In</CallToAction>
               </Grid>
@@ -30,7 +30,7 @@ const Welcome = () => (
                   Register
                 </CallToAction>
               </Grid>
-            </Fragment>
+            </>
           )}
         </Grid>
       </Grid>

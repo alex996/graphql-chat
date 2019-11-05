@@ -1,13 +1,13 @@
-import { UserInputError } from 'apollo-server-express'
+import { UserInputError, IResolvers } from 'apollo-server-express'
 import { startChat } from '../validators'
 import { User, Chat, Message } from '../models'
 import { Request, ChatDocument, UserDocument, MessageDocument } from '../types'
 import { fields } from '../utils'
 
-export default {
+const resolvers: IResolvers = {
   Mutation: {
     startChat: async (
-      root: object,
+      root,
       args: { title: string; userIds: [string] },
       { req }: { req: Request }
     ): Promise<ChatDocument> => {
@@ -47,29 +47,31 @@ export default {
   Chat: {
     messages: (
       chat: ChatDocument,
-      args: any,
-      ctx: any,
-      info: any
+      args,
+      ctx,
+      info
     ): Promise<MessageDocument[]> => {
       // TODO: pagination
       return Message.find({ chat: chat.id }, fields(info)).exec()
     },
     users: async (
       chat: ChatDocument,
-      args: any,
-      ctx: any,
-      info: any
+      args,
+      ctx,
+      info
     ): Promise<UserDocument[]> => {
       return (await chat.populate('users', fields(info)).execPopulate()).users
     },
     lastMessage: async (
       chat: ChatDocument,
-      args: any,
-      ctx: any,
-      info: any
+      args,
+      ctx,
+      info
     ): Promise<MessageDocument> => {
       return (await chat.populate('lastMessage', fields(info)).execPopulate())
         .lastMessage
     }
   }
 }
+
+export default resolvers

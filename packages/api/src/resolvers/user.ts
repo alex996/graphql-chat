@@ -1,33 +1,34 @@
+import { IResolvers } from 'apollo-server-express'
 import { Request, Response, UserDocument, ChatDocument } from '../types'
 import { signUp, signIn, objectId } from '../validators'
 import { attemptSignIn, signOut } from '../auth'
 import { User } from '../models'
 import { fields } from '../utils'
 
-export default {
+const resolvers: IResolvers = {
   Query: {
     me: (
-      root: any,
-      args: any,
+      root,
+      args,
       { req }: { req: Request },
-      info: any
+      info
     ): Promise<UserDocument | null> => {
       return User.findById(req.session.userId, fields(info)).exec()
     },
     users: (
-      root: any,
-      args: any,
-      ctx: any,
-      info: any
+      root,
+      args,
+      ctx,
+      info
     ): Promise<UserDocument[]> => {
       // TODO: pagination
       return User.find({}, fields(info)).exec()
     },
     user: async (
-      root: any,
+      root,
       args: { id: string },
-      ctx: any,
-      info: any
+      ctx,
+      info
     ): Promise<UserDocument | null> => {
       await objectId.validateAsync(args)
 
@@ -36,7 +37,7 @@ export default {
   },
   Mutation: {
     signUp: async (
-      root: any,
+      root,
       args: { email: string; username: string; name: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
@@ -49,7 +50,7 @@ export default {
       return user
     },
     signIn: async (
-      root: any,
+      root,
       args: { email: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
@@ -62,8 +63,8 @@ export default {
       return user
     },
     signOut: (
-      root: any,
-      args: any,
+      root,
+      args,
       { req, res }: { req: Request; res: Response }
     ): Promise<boolean> => {
       return signOut(req, res)
@@ -72,9 +73,9 @@ export default {
   User: {
     chats: async (
       user: UserDocument,
-      args: any,
+      args,
       { req }: { req: Request },
-      info: any
+      info
     ): Promise<ChatDocument[]> => {
       // TODO: paginate
       return (await user
@@ -91,3 +92,5 @@ export default {
     }
   }
 }
+
+export default resolvers

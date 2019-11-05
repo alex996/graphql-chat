@@ -26,7 +26,7 @@ export const DB_URI = `mongodb://${DB_USERNAME}:${encodeURIComponent(
   DB_PASSWORD
 )}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
 
-export const DB_OPTIONS = { useNewUrlParser: true }
+export const DB_OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true }
 
 export const REDIS_OPTIONS = {
   host: REDIS_HOST,
@@ -52,8 +52,8 @@ export const APOLLO_OPTIONS = {
   playground: IN_PROD
     ? false
     : {
-        settings: {
-          'request.credentials': 'include'
-        }
+      settings: {
+        'request.credentials': 'include'
       }
+    }
 }

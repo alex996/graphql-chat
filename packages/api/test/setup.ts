@@ -2,6 +2,7 @@ import request, { Test } from 'supertest'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import createApp from '../src/app'
+import { DB_OPTIONS } from '../src/config'
 
 const {
   app,
@@ -33,7 +34,7 @@ beforeAll(async () => {
 
   const uri = await mongod.getConnectionString()
 
-  await mongoose.connect(uri, { useNewUrlParser: true })
+  await mongoose.connect(uri, DB_OPTIONS)
 })
 
 afterAll(async () => {

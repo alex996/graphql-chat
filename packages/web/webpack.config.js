@@ -28,14 +28,14 @@ module.exports = (env, { mode }) => {
         defaultAttribute: 'defer'
       }),
       new webpack.DefinePlugin({
-        API_URI: `"${process.env.API_URI || '/graphql'}"`
+        'process.env.API_URI': `"${process.env.API_URI || '/graphql'}"`
       })
     ],
     devServer: {
       open: true,
       port: 4000,
       compress: true,
-      historyApiFallback: true, // HTML5 History
+      historyApiFallback: true,
       proxy: {
         '/graphql': 'http://localhost:3000'
       }

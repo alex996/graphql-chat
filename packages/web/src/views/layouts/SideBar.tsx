@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ReactNode } from 'react'
+import React, { useState } from 'react'
 import gql from 'graphql-tag'
 import {
   Drawer,
@@ -121,7 +121,7 @@ const SideBar = () => {
   const handleToggle = () => setOpen(!open)
 
   return (
-    <Fragment>
+    <>
       <IconButton edge='start' color='inherit' onClick={handleToggle}>
         <Menu />
       </IconButton>
@@ -132,7 +132,7 @@ const SideBar = () => {
           <GuestList onToggle={handleToggle} />
         )}
       </Drawer>
-    </Fragment>
+    </>
   )
 }
 

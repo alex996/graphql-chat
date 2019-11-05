@@ -1,8 +1,9 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, RefForwardingComponent } from 'react'
 import { Link, LinkProps } from 'react-router-dom'
 
-const AdapterLink = forwardRef((props: LinkProps, ref) => (
-  <Link innerRef={ref as any} {...props} />
-))
+const AdapterLink: RefForwardingComponent<HTMLAnchorElement, LinkProps> =
+  (props, ref) => (
+    <Link innerRef={ref} {...props} />
+  )
 
-export default AdapterLink
+export default forwardRef(AdapterLink)
