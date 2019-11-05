@@ -1,4 +1,3 @@
-import Joi from '@hapi/joi'
 import { Request, Response, UserDocument, ChatDocument } from '../types'
 import { signUp, signIn, objectId } from '../validators'
 import { attemptSignIn, signOut } from '../auth'
@@ -30,7 +29,7 @@ export default {
       ctx: any,
       info: any
     ): Promise<UserDocument | null> => {
-      await Joi.validate(args, objectId)
+      await objectId.validateAsync(args)
 
       return User.findById(args.id, fields(info))
     }
@@ -41,7 +40,7 @@ export default {
       args: { email: string; username: string; name: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
-      await Joi.validate(args, signUp, { abortEarly: false })
+      await signUp.validateAsync(args, { abortEarly: false })
 
       const user = await User.create(args)
 
@@ -54,7 +53,7 @@ export default {
       args: { email: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
-      await Joi.validate(args, signIn, { abortEarly: false })
+      signIn.validateAsync(args, { abortEarly: false })
 
       const user = await attemptSignIn(args.email, args.password)
 

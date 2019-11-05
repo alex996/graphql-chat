@@ -11,8 +11,7 @@ export const startChat = (userId: string) =>
       .max(100)
       .unique()
       .items(
-        Joi.string()
-          .objectId()
+        Joi.objectId()
           .not(userId)
           .label('User ID')
       )

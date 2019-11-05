@@ -1,4 +1,3 @@
-import Joi from '@hapi/joi'
 import { UserInputError } from 'apollo-server-express'
 import { startChat } from '../validators'
 import { User, Chat, Message } from '../models'
@@ -15,7 +14,7 @@ export default {
       const { userId } = req.session
       const { title, userIds } = args
 
-      await Joi.validate(args, startChat(userId), { abortEarly: false })
+      await startChat(userId).validateAsync(args, { abortEarly: false })
 
       const idsFound = await User.where('_id')
         .in(userIds)

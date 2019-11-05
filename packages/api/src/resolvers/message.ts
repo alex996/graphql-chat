@@ -1,4 +1,3 @@
-import Joi from '@hapi/joi'
 import { Types } from 'mongoose'
 import {
   UserInputError,
@@ -20,7 +19,7 @@ export default {
       args: { chatId: string; body: string },
       { req }: { req: Request }
     ): Promise<MessageDocument> => {
-      await Joi.validate(args, sendMessage, { abortEarly: false })
+      await sendMessage.validateAsync(args, { abortEarly: false })
 
       const { userId } = req.session
       const { chatId, body } = args

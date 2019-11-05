@@ -1,24 +1,17 @@
-import Joi, { Extension } from '@hapi/joi'
+import Joi, { ExtensionFactory } from '@hapi/joi'
 import mongoose from 'mongoose'
 
-const objectId: Extension = {
-  name: 'string',
-  base: Joi.string(),
-  language: {
-    objectId: 'must be a valid Object ID'
+const objectId: ExtensionFactory = joi => ({
+  type: 'objectId',
+  base: joi.string(),
+  messages: {
+    'objectId.base': 'must be a valid Object ID'
   },
-  rules: [
-    {
-      name: 'objectId',
-      validate (params, value, state, options) {
-        if (!mongoose.Types.ObjectId.isValid(value)) {
-          return this.createError('string.objectId', {}, state, options)
-        }
-
-        return value
-      }
+  validate (value, helpers) {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
+      return { value, errors: helpers.error('objectId') }
     }
-  ]
-}
+  }
+})
 
 export default Joi.extend(objectId)
