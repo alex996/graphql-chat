@@ -7,11 +7,11 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE=chat
-      - DB_USERNAME=admin
-      - DB_PASSWORD=secret
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
       - ./data:/data/db
@@ -22,5 +22,5 @@ services:
     ports:
       - "6379:6379"
     environment:
-      - REDIS_PASSWORD=secret
+      - REDIS_PASSWORD
     command: ['--requirepass "$REDIS_PASSWORD"']

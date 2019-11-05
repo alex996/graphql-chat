@@ -9,6 +9,9 @@ GraphQL chat API & UI monorepo.
 ### Dev
 
 ```sh
+# Create env file
+cp .env.example .env
+
 # Boot the stack; this will
 # - provision mongo & redis
 # - launch api & web
