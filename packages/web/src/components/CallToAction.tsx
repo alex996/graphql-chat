@@ -21,7 +21,7 @@ const CallToAction = (props: Props) => {
   const classes = useStyles()
   return (
     <Button
-      {...props.to && { component: AdapterLink }}
+      {...(props.to && { component: AdapterLink })}
       className={classes.root}
       variant='contained'
       color='primary'

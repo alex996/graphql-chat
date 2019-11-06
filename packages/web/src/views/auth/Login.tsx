@@ -1,11 +1,11 @@
 import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { styled } from '@material-ui/core/styles'
 import { useMutation } from '@apollo/react-hooks'
 import { Grid, Avatar as MuiAvatar, TextField, Link } from '@material-ui/core'
 import { CallToAction, AdapterLink } from '../../components'
-import { isLoggedIn, rememberLogin } from '../../auth'
+import { rememberLogin } from '../../auth'
 import { useInput } from '../../hooks'
 import { Person } from '../../icons'
 import { PaperBox } from './'
@@ -28,10 +28,6 @@ const LOG_IN = gql`
 `
 
 const Login = (props: RouteComponentProps) => {
-  if (isLoggedIn()) {
-    return <Redirect to='/home' />
-  }
-
   const email = useInput()
   const password = useInput()
 
@@ -99,7 +95,7 @@ const Login = (props: RouteComponentProps) => {
               </Grid>
               <Grid item>
                 <Link component={AdapterLink} to='/register' variant='body2'>
-                  {'Don\'t have an account?'}
+                  {"Don't have an account?"}
                 </Link>
               </Grid>
             </Grid>

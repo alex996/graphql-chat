@@ -64,7 +64,10 @@ const resolvers: IResolvers = {
       subscribe: withFilter(
         () => pubsub.asyncIterator(MESSAGE_SENT),
         async (
-          { messageSent, users }: { messageSent: MessageDocument; users: [string] },
+          {
+            messageSent,
+            users
+          }: { messageSent: MessageDocument; users: [string] },
           { chatId }: { chatId: string },
           { req }: { req: Request }
         ) => {

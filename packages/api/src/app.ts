@@ -23,7 +23,8 @@ const createApp = (store?: session.Store) => {
     typeDefs,
     resolvers,
     schemaDirectives,
-    context: ({ req, res, connection }) => (connection ? connection.context : { req, res }),
+    context: ({ req, res, connection }) =>
+      connection ? connection.context : { req, res },
     subscriptions: {
       onConnect: async (connectionParams, webSocket, { request }) => {
         const req = await new Promise(resolve => {

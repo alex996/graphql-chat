@@ -58,13 +58,13 @@ const userSchema = new Schema(
   }
 )
 
-userSchema.pre('save', async function (this: UserDocument) {
+userSchema.pre('save', async function(this: UserDocument) {
   if (this.isModified('password')) {
     this.password = await User.hash(this.password)
   }
 })
 
-userSchema.query.none = async function (
+userSchema.query.none = async function(
   this: DocumentQuery<any, UserDocument>
 ): Promise<boolean> {
   return (await this.countDocuments()) === 0
@@ -73,7 +73,7 @@ userSchema.query.none = async function (
 userSchema.statics.hash = (password: string): Promise<string> =>
   hash(password, 10)
 
-userSchema.methods.matchesPassword = function (
+userSchema.methods.matchesPassword = function(
   this: UserDocument,
   password: string
 ): Promise<boolean> {

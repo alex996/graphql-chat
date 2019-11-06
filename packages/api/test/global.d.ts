@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   interface Global {
-    graphql: Function;
-    signIn: Function;
+    graphql: Function
+    signIn: Function
   }
 }

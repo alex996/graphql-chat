@@ -1,10 +1,10 @@
 import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
 import { Grid, TextField, Link } from '@material-ui/core'
 import { CallToAction, AdapterLink } from '../../components'
-import { isLoggedIn, rememberLogin } from '../../auth'
+import { rememberLogin } from '../../auth'
 import { useInput } from '../../hooks'
 import { PaperBox } from './'
 
@@ -27,10 +27,6 @@ const REGISTER = gql`
 `
 
 const Register = (props: RouteComponentProps) => {
-  if (isLoggedIn()) {
-    return <Redirect to='/home' />
-  }
-
   const name = useInput()
   const username = useInput()
   const email = useInput()

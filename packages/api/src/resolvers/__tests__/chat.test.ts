@@ -60,7 +60,7 @@ describe('Chat', () => {
       await a.updateOne({ $push: { chats: chat } })
       const messages = await Message.insertMany([
         { body: 'Hi', sender: a, chat },
-        { body: 'What\'s up', sender: m, chat }
+        { body: "What's up", sender: m, chat }
       ])
 
       // When

@@ -44,10 +44,10 @@ const LinkList = ({ links }: LinkListProps) => {
         <ListItem
           button
           key={index}
-          {...to && {
+          {...(to && {
             to,
             component: AdapterLink
-          }}
+          })}
           {...rest}
         >
           <ListItemText primary={text} />

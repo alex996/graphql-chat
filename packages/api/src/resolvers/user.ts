@@ -15,12 +15,7 @@ const resolvers: IResolvers = {
     ): Promise<UserDocument | null> => {
       return User.findById(req.session.userId, fields(info)).exec()
     },
-    users: (
-      root,
-      args,
-      ctx,
-      info
-    ): Promise<UserDocument[]> => {
+    users: (root, args, ctx, info): Promise<UserDocument[]> => {
       // TODO: pagination
       return User.find({}, fields(info)).exec()
     },

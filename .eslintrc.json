@@ -6,11 +6,16 @@
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "standard",
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+    "prettier/react"
   ],
+  "plugins": ["react-hooks"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -28,11 +33,10 @@
     }
   },
   "rules": {
-    "@typescript-eslint/indent": "off",
-    "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
-    "jsx-quotes": ["error", "prefer-single"]
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

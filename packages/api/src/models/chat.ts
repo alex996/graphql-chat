@@ -25,7 +25,7 @@ const chatSchema = new Schema(
 
 const USER_LIMIT = 5
 
-chatSchema.pre('save', async function (this: ChatDocument) {
+chatSchema.pre('save', async function(this: ChatDocument) {
   if (!this.title) {
     const users = await User.where('_id')
       .in(this.users)
@@ -43,7 +43,7 @@ chatSchema.pre('save', async function (this: ChatDocument) {
   }
 })
 
-chatSchema.query.any = async function (
+chatSchema.query.any = async function(
   this: DocumentQuery<any, ChatDocument>
 ): Promise<boolean> {
   return (await this.countDocuments()) !== 0
