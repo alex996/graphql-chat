@@ -7,9 +7,6 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
-      maxlength: 50,
-      trim: true,
       validate: [
         // @ts-ignore
         (username: string): boolean => User.where('username', username).none(),
@@ -18,34 +15,14 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      lowercase: true,
-      required: true,
-      minlength: 8,
-      maxlength: 254,
-      trim: true,
-      match: [/\S+@\S+\.\S+/, 'Email is invalid.'],
       validate: [
         // @ts-ignore
         (email: string): boolean => User.where('email', email).none(),
         'Email is already taken.'
       ]
     },
-    name: {
-      type: String,
-      required: true,
-      maxlength: 100,
-      trim: true
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 8,
-      maxlength: 100,
-      match: [
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
-        'Password must contain one lowercase letter, one uppercase letter, and one number.'
-      ]
-    },
+    name: String,
+    password: String,
     chats: [
       {
         type: Schema.Types.ObjectId,

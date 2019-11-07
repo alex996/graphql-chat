@@ -6,6 +6,6 @@ export const sendMessage = Joi.object().keys({
     .label('Chat ID'),
   body: Joi.string()
     .required()
-    // TODO: .max()
+    .max(4_000) // TODO: Truncate into multiple msgs
     .label('Body')
 })

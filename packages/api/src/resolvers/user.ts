@@ -49,7 +49,7 @@ const resolvers: IResolvers = {
       args: { email: string; password: string },
       { req }: { req: Request }
     ): Promise<UserDocument> => {
-      signIn.validateAsync(args, { abortEarly: false })
+      await signIn.validateAsync(args, { abortEarly: false })
 
       const user = await attemptSignIn(args.email, args.password)
 
