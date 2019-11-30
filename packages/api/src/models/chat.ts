@@ -17,16 +17,15 @@ const chatSchema = new Schema(
       ],
       validate: [
         {
-          // @ts-ignore TODO: both run in parallel, make sequential
-          validator: async (userIds: string[]): boolean =>
+          // TODO: both run in parallel, make sequential
+          validator: async (userIds: string[]): Promise<boolean> =>
             (await User.where('_id')
               .in(userIds)
               .countDocuments()) === userIds.length,
           message: 'One or more User IDs are invalid.'
         },
         {
-          // @ts-ignore
-          validator: async (userIds: string[]): boolean =>
+          validator: async (userIds: string[]): Promise<boolean> =>
             !(await Chat.exists({ users: userIds })),
           message: 'Chat with given User IDs already exists.'
         }

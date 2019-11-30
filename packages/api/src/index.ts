@@ -13,7 +13,6 @@ import { DB_URI, DB_OPTIONS, REDIS_OPTIONS, HTTP_PORT } from './config'
     const RedisStore = connectRedis(session)
 
     const store = new RedisStore({
-      // @ts-ignore
       client: new Redis(REDIS_OPTIONS)
     })
 

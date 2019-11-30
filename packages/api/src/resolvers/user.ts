@@ -77,13 +77,14 @@ const resolvers: IResolvers = {
         return []
       }
 
-      return (await user
+      await user
         .populate({
           // TODO: paginate
           path: 'chats',
           select: fields(info)
         })
-        .execPopulate()).chats
+        .execPopulate()
+      return user.chats
     }
   }
 }

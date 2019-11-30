@@ -8,16 +8,16 @@ const userSchema = new Schema(
     username: {
       type: String,
       validate: [
-        // @ts-ignore
-        async (username: string): boolean => !(await User.exists({ username })),
+        async (username: string): Promise<boolean> =>
+          !(await User.exists({ username })),
         'Username is already taken.'
       ]
     },
     email: {
       type: String,
       validate: [
-        // @ts-ignore
-        async (email: string): boolean => !(await User.exists({ email })),
+        async (email: string): Promise<boolean> =>
+          !(await User.exists({ email })),
         'Email is already taken.'
       ]
     },
