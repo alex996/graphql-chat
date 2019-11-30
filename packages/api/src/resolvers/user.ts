@@ -47,11 +47,12 @@ const resolvers: IResolvers = {
     signIn: async (
       root,
       args: { email: string; password: string },
-      { req }: { req: Request }
+      { req }: { req: Request },
+      info
     ): Promise<UserDocument> => {
       await signIn.validateAsync(args, { abortEarly: false })
 
-      const user = await attemptSignIn(args.email, args.password)
+      const user = await attemptSignIn(args, fields(info))
 
       req.session.userId = user.id
 
@@ -72,15 +73,14 @@ const resolvers: IResolvers = {
       { req }: { req: Request },
       info
     ): Promise<ChatDocument[]> => {
-      // TODO: paginate
+      if (user.id !== req.session.userId) {
+        return []
+      }
+
       return (await user
         .populate({
+          // TODO: paginate
           path: 'chats',
-          match: {
-            users: {
-              $in: req.session.userId
-            }
-          },
           select: fields(info)
         })
         .execPopulate()).chats

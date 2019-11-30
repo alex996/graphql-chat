@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose'
+import { Document } from 'mongoose'
 import { UserDocument, MessageDocument } from './'
 
 export interface ChatDocument extends Document {
@@ -6,10 +6,3 @@ export interface ChatDocument extends Document {
   users: [UserDocument['_id']]
   lastMessage: MessageDocument['_id']
 }
-
-interface ChatQueryHelpers {
-  any: () => Promise<boolean>
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ChatModel extends Model<ChatDocument, ChatQueryHelpers> {}

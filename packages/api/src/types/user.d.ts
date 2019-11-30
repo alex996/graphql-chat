@@ -1,5 +1,5 @@
 import { Document, Model } from 'mongoose'
-import { ChatDocument } from './chat'
+import { ChatDocument } from './'
 
 export interface UserDocument extends Document {
   name: string
@@ -10,10 +10,6 @@ export interface UserDocument extends Document {
   matchesPassword: (password: string) => Promise<boolean>
 }
 
-interface UserQueryHelpers {
-  none: () => Promise<boolean>
-}
-
-export interface UserModel extends Model<UserDocument, UserQueryHelpers> {
+export interface UserModel extends Model<UserDocument> {
   hash: (password: string) => Promise<string>
 }

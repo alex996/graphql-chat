@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { model, Schema, DocumentQuery } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { hash, compare } from 'bcryptjs'
 import { UserDocument, UserModel } from '../types'
 
@@ -9,7 +9,7 @@ const userSchema = new Schema(
       type: String,
       validate: [
         // @ts-ignore
-        (username: string): boolean => User.where('username', username).none(),
+        async (username: string): boolean => !(await User.exists({ username })),
         'Username is already taken.'
       ]
     },
@@ -17,7 +17,7 @@ const userSchema = new Schema(
       type: String,
       validate: [
         // @ts-ignore
-        (email: string): boolean => User.where('email', email).none(),
+        async (email: string): boolean => !(await User.exists({ email })),
         'Email is already taken.'
       ]
     },
@@ -40,12 +40,6 @@ userSchema.pre('save', async function(this: UserDocument) {
     this.password = await User.hash(this.password)
   }
 })
-
-userSchema.query.none = async function(
-  this: DocumentQuery<any, UserDocument>
-): Promise<boolean> {
-  return (await this.countDocuments()) === 0
-}
 
 userSchema.statics.hash = (password: string): Promise<string> =>
   hash(password, 10)

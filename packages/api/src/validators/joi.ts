@@ -5,7 +5,7 @@ const objectId: ExtensionFactory = joi => ({
   type: 'objectId',
   base: joi.string(),
   messages: {
-    'objectId.base': 'must be a valid Object ID'
+    objectId: '"{{#label}}" must be a valid Object ID'
   },
   validate(value, helpers) {
     if (!mongoose.Types.ObjectId.isValid(value)) {

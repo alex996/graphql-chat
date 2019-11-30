@@ -4,15 +4,15 @@ import { SESS_NAME } from './config'
 import { Request, Response, UserDocument } from './types'
 
 export const attemptSignIn = async (
-  email: string,
-  password: string
+  { email, password }: { email: string; password: string },
+  fields: string
 ): Promise<UserDocument> => {
-  const message = 'Incorrect email or password. Please try again.'
-
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email }).select(`${fields} password`)
 
   if (!user || !(await user.matchesPassword(password))) {
-    throw new AuthenticationError(message)
+    throw new AuthenticationError(
+      'Incorrect email or password. Please try again.'
+    )
   }
 
   return user
