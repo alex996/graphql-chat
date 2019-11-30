@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci --development
+RUN npm install --only=development
 
 COPY . .
 
@@ -16,7 +16,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci --production
+RUN npm install --only=production
 
 COPY --from=builder /usr/src/app/dist ./
 

@@ -32,6 +32,7 @@ services:
   db:
     image: mongo
     container_name: chat-db
+    user: $UID
     expose:
       - "27017"
     environment:

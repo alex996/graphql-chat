@@ -1,17 +1,18 @@
-version: "3"
+version: '3'
 
 services:
   db:
     image: mongo
     container_name: chat-db
     ports:
-      - "27017:27017"
+      - '27017:27017'
+    user: $UID
     environment:
-      - MONGO_INITDB_ROOT_USERNAME
-      - MONGO_INITDB_ROOT_PASSWORD
-      - MONGO_INITDB_DATABASE
-      - DB_USERNAME
-      - DB_PASSWORD
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=chat
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
       - ./data:/data/db
@@ -20,7 +21,5 @@ services:
     image: redis:alpine
     container_name: chat-cache
     ports:
-      - "6379:6379"
-    environment:
-      - REDIS_PASSWORD
-    command: ['--requirepass "$REDIS_PASSWORD"']
+      - '6379:6379'
+    command: ['--requirepass "secret"']

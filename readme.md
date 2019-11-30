@@ -9,8 +9,8 @@ GraphQL chat API & UI monorepo.
 ### Dev
 
 ```sh
-# Create env file
-cp .env.example .env
+# (Linux) Export UID to fix permissions
+export UID
 
 # Boot the stack; this will
 # - provision mongo & redis
@@ -30,6 +30,11 @@ npm run down
 ### Prod
 
 ```sh
+# (Linux) Export UID to fix permissions
+export UID
+# (Linux) Create volume dir with current user
+mkdir data
+
 # Create env file
 cp .env.example .env
 # or export into shell
