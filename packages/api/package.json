@@ -26,7 +26,7 @@
     "apollo-server-express": "^2.9.12",
     "bcryptjs": "^2.4.3",
     "connect-redis": "^4.0.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.0",
     "graphql": "^14.5.8",
     "graphql-fields": "^2.0.3",
